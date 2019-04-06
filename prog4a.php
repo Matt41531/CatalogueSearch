@@ -7,6 +7,7 @@ class searchableJSON {
 	public $platform;
 	public $searchable;
 	public $JSON;
+	public $objectsToPrint;
 	
 	public function checkParameters() {
 		global $argv;
@@ -39,9 +40,15 @@ class searchableJSON {
 			foreach ($this->JSON->platforms as $key => $value) {
 			echo $value->label, PHP_EOL;
 			if($value-> label  == $this->platform) {
-				print("Found one");
+				print($key);
+				$this->indexToPrint = $key;
 			}
-		}
+			}
+		$this->printResults();
+	}
+
+	public function printResults() {
+		var_dump($this->JSON->platforms[$this->indexToPrint]);
 	}
 	
 }
