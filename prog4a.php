@@ -2,29 +2,57 @@
 
 <?PHP 
 
-function checkParameters() {
-	global $argv;
-	if(sizeof($argv) == 3) {
-		echo "3 arguements";
-		$input = "";
+class searchableJSON {
+	public $input;
+	public $platform;
+	public $searchable;
+	public $JSON;
+	
+	public function checkParameters() {
+		global $argv;
+		if(sizeof($argv) == 3) {
+			echo "3 arguements";
+			$this->input = "";
+		}
+		else if (sizeof($argv) == 4) {
+			echo "Arguements worked!";
+			$this->input = $argv[3];
+		}
+		else {
+			echo "Invalid arguments";
+			return;
+		}
+		$this->platform = $argv[1];
+		$this->searchable = $argv[2];	
 	}
-	else if (sizeof($argv) == 4) {
-		echo "Arguements worked!";
-		$input = $argv[3];
+
+
+	public function getJSON() {
+		$data = file_get_contents('http://www.cs.uky.edu/~paul/public/Games.json');
+		$decodedData = json_decode($data);
+		$this->JSON = $decodedData;
+		#var_dump($this->JSON);
 	}
-	else {
-		echo "Invalid arguments";
-		return;
+
+	public function findLabel() {
+		print("Starting... ");
+			foreach ($this->JSON->platforms as $key => $value) {
+			echo $value->label, PHP_EOL;
+			if($value-> label  == $this->platform) {
+				print("Found one");
+			}
+		}
 	}
-	$platform = $argv[1];
-	$searchable = $argv[2];
-	return [$platform, $searchable, $input];
+	
 }
 
-$parameters = checkParameters();
-if($parameters) {
-	echo "Cool";
+$JSONObject = new searchableJSON();
+$JSONObject->checkParameters();
+if(True) {	
+	$JSONObject->getJSON();
+	$JSONObject->findLabel();
 }
+
 
 ?>
 
