@@ -57,6 +57,9 @@ class searchableJSON {
 				if($key == "searchable") {
 					$this->JSONSearchable = $value;
 				}
+				else if($key == "label") {
+					#skip
+				}
 				else if($key == "url") {
 					$this->titlesURL = $value;					
 				}
@@ -64,7 +67,7 @@ class searchableJSON {
 					$this->JSONDescriptors = $value;
 				}
 				else if($key == "objects") {
-					$this->JSONObjects = $value
+					$this->JSONObjects = $value;
 				}
 				else {
 					echo "INVALID JSON FORMAT: Must have url,label,descriptors,objects,and searchable properties";
@@ -75,8 +78,19 @@ class searchableJSON {
 	}
 
 	public function findTitles() {
-		$this->descriptionJSON = file_get_contents($this->titlesURL);
-		var_dump($this->descriptionJSON);
+		$this->descriptionJSON = json_decode(file_get_contents($this->titlesURL));
+		#var_dump($this->descriptionJSON);
+		foreach($this->descriptionJSON as $key => $value) {
+			echo $key;
+			if($key == $this->JSONDescriptors) {
+				for($i = 0; $i < sizeof($value); $i++) {
+					echo $value[$i], PHP_EOL;
+				}
+			}
+			else if($key == $this->JSONObjects) {
+				echo "Object";
+			}
+		}
 	}
 }
 $JSONObject = new searchableJSON();
