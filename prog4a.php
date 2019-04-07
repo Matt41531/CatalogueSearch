@@ -7,7 +7,7 @@ class searchableJSON {
 	public $platform;
 	public $searchable;
 	public $JSON;
-	public $objectsToPrint;
+	public $indexToPrint = array();
 	
 	public function checkParameters() {
 		global $argv;
@@ -38,21 +38,35 @@ class searchableJSON {
 	public function findLabel() {
 		print("Starting... ");
 			foreach ($this->JSON->platforms as $key => $value) {
-			echo $value->label, PHP_EOL;
-			if($value-> label  == $this->platform) {
+			#echo $value->label, PHP_EOL;
+			if($value->label  == $this->platform) {
 				print($key);
-				$this->indexToPrint = $key;
+				array_push($this->indexToPrint,$key);
 			}
 			}
 		$this->printResults();
 	}
 
 	public function printResults() {
-		var_dump($this->JSON->platforms[$this->indexToPrint]);
+		#var_dump($this->JSON->platforms[$this->indexToPrint]);
+		for($i = 0; $i < sizeof($this->indexToPrint); $i++) {
+			foreach($this->JSON->platforms[$i] as $key => $value) {
+				if($key == "searchable") {
+					#print array
+					echo $key, " : ";
+					for($arrayIndex = 0; $arrayIndex < sizeof($this->JSON->platforms[$i]->searchable);$arrayIndex++) {
+						echo $value[$arrayIndex], " ";
+					}
+					echo PHP_EOL;
+				}
+				else {	
+					echo $key, " : ", $value, PHP_EOL;
+				}
+			}
+		}
+		
 	}
-	
 }
-
 $JSONObject = new searchableJSON();
 $JSONObject->checkParameters();
 if(True) {	
