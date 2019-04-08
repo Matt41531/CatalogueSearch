@@ -89,6 +89,13 @@ class searchableJSON {
 			}
 			else if($key == $this->JSONObjects) {
 				echo "Object";
+				$this->TitlesObject = $value;		
+				var_dump($this->TitlesObject);
+				for($i = 0; $i <sizeof($this->TitlesObject); $i++) {
+					foreach($this->TitlesObject[$i] as $newKey => $newValue) {
+						echo $newKey, " : ", $newValue, PHP_EOL;
+					}
+				}
 			}
 		}
 	}
