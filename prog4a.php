@@ -10,8 +10,9 @@ class searchableJSON {
 	public $JSONObjects;
 	public $JSONSearchable;
 	public $JSON;
-	public $indexToPrint = array();
+	public $indexToPrint;
 	public $titles;
+	public $objectsToPrint = array();
 	
 	public function checkParameters() {
 		global $argv;
@@ -42,18 +43,17 @@ class searchableJSON {
 	public function findLabel() {
 		print("Starting... ");
 			foreach ($this->JSON->platforms as $key => $value) {
-			#echo $value->label, PHP_EOL;
-			if($value->label  == $this->userPlatform) {
-				array_push($this->indexToPrint,$key);
-			}
+				if($value->label  == $this->userPlatform) {
+					$this->indexToPrint = $key;
+					echo "The key printing... ", $key;
+				}
 			}
 		$this->findPlatform();
 	}
 
 	public function findPlatform() {
 		#var_dump($this->JSON->platforms[$this->indexToPrint]);
-		for($i = 0; $i < sizeof($this->indexToPrint); $i++) {
-			foreach($this->JSON->platforms[$i] as $key => $value) {
+			foreach($this->JSON->platforms[$this->indexToPrint] as $key => $value) {
 				if($key == "searchable") {
 					$this->JSONSearchable = $value;
 				}
@@ -73,11 +73,12 @@ class searchableJSON {
 					echo "INVALID JSON FORMAT: Must have url,label,descriptors,objects,and searchable properties";
 				}
 			}
-		}
+		
 		
 	}
 
 	public function findTitles() {
+		echo $this->titlesURL;
 		$this->descriptionJSON = json_decode(file_get_contents($this->titlesURL));
 		#var_dump($this->descriptionJSON);
 		foreach($this->descriptionJSON as $key => $value) {
@@ -90,7 +91,7 @@ class searchableJSON {
 			else if($key == $this->JSONObjects) {
 				echo "Object";
 				$this->TitlesObject = $value;		
-				var_dump($this->TitlesObject);
+				#var_dump($this->TitlesObject);
 				for($i = 0; $i <sizeof($this->TitlesObject); $i++) {
 					foreach($this->TitlesObject[$i] as $newKey => $newValue) {
 						echo $newKey, " : ", $newValue, PHP_EOL;
