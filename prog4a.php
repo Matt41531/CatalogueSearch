@@ -30,6 +30,22 @@ class searchableJSON {
 		$this->userSearchable = $argv[2];	
 	}
 
+	public function getParameters() {
+		$this->userPlatform = $_GET["platform"];
+		$this->userSearchable = $_GET["searchable"];
+		$this->userInput = $_GET["input"];
+	}
+
+	public function echoForm() {
+		echo "<form action=\"\" id=\"inputForm\">
+			Criteria: <input type=\"text\" name=\"criteria\">
+			<input type=\"submit\">
+			</form>
+			<br>
+			<select name=\"whichPlatform\" form=\"inputForm\">
+				<option value=\"Arcade\">Arcade</option>
+			</select>";
+	}
 
 	public function getJSON() {
 		$data = file_get_contents('http://www.cs.uky.edu/~paul/public/Games.json');
@@ -105,6 +121,7 @@ class searchableJSON {
 }
 function main() {
 	$JSONObject = new searchableJSON();
+	$JSONObject->echoForm();
 	$JSONObject->checkParameters();
 	$JSONObject->getJSON();
 	$JSONObject->findLabel();
