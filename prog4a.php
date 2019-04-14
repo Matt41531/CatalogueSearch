@@ -147,7 +147,12 @@ class searchableJSON {
 
 				for($i = 0; $i<sizeof($this->objectsIndexToPrint); $i++) {
 					foreach($this->TitlesObject[$this->objectsIndexToPrint[$i]] as $newKey => $newValue) {
-						echo $newKey, " : ". $newValue, "<br>";
+						if($this->userSearchable == $newKey) {
+							echo "<b>", $newKey, " : ", $newValue, "</b>", "<br>";
+						}
+						else {
+							echo $newKey, " : ". $newValue, "<br>";
+						}
 					}
 				}
 			}
