@@ -9,6 +9,7 @@ class searchableJSON {
 	public $JSONDescriptors;
 	public $JSONObjects;
 	public $JSONSearchable;
+	public $whichPlatformOptions = array();
 	public $JSON;
 	public $indexToPrint;
 	public $titles;
@@ -31,9 +32,9 @@ class searchableJSON {
 	}
 
 	public function getParameters() {
-		$this->userPlatform = $_GET["platform"];
-		$this->userSearchable = $_GET["searchable"];
-		$this->userInput = $_GET["input"];
+		$this->userPlatform = $_GET["whichPlatform"];
+		$this->userSearchable = $_GET["searchField"];
+		$this->userInput = $_GET["criteria"];
 	}
 
 	public function echoForm() {
@@ -42,9 +43,26 @@ class searchableJSON {
 			<input type=\"submit\">
 			</form>
 			<br>
-			<select name=\"whichPlatform\" form=\"inputForm\">
-				<option value=\"Arcade\">Arcade</option>
+			<select name=\"whichPlatform\" form=\"inputForm\">";
+		for($i = 0; $i <sizeof($this->whichPlatformOptions);$i++) {
+			echo "<option value=\"";
+			echo $this->whichPlatformOptions[$i];
+			echo "\">";
+			echo $this->whichPlatformOptions[$i];
+			echo "</option>";
+	
+		}
+			echo "</select>
+			<select name=\"searchField\" form=\"inputForm\">
+				<option value=\"Year\">Year</option>
 			</select>";
+
+		
+	}
+	public function findAllLabels() {
+		foreach ($this->JSON->platforms as $key => $value) {
+			array_push($this->whichPlatformOptions, $value->label);
+		}
 	}
 
 	public function getJSON() {
@@ -121,9 +139,10 @@ class searchableJSON {
 }
 function main() {
 	$JSONObject = new searchableJSON();
+	$JSONObject->getJSON();
+	$JSONObject->findAllLabels();
 	$JSONObject->echoForm();
 	$JSONObject->checkParameters();
-	$JSONObject->getJSON();
 	$JSONObject->findLabel();
 	$JSONObject->findTitles();
 }
