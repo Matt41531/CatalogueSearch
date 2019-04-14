@@ -16,7 +16,8 @@ class searchableJSON {
 	public $indexToPrint;
 	public $titles;
 	public $objectsIndexToPrint = array();
-	
+
+	#PURPOSE: Error checking for the parameters
 	public function checkParameters() {
 		if(!$this->userPlatform) {
 			echo "<b> Invalid platform </b><br>";
@@ -29,6 +30,7 @@ class searchableJSON {
 		}
 	}
 
+	#PURPOSE: Get the parameters passed through the URL
 	public function getParameters() {
 		$this->userPlatform = $_GET["whichPlatform"];
 		$this->userSearchable = $_GET["searchField"];
@@ -36,7 +38,9 @@ class searchableJSON {
 		$this->submit = $_GET["Report"];
 	}
 
+	#PURPOSE: Create the form in HTML with the proper pull down menu choices
 	public function echoForm() {
+		echo "<HTML><body>";
 		echo "<select name=\"whichPlatform\" form=\"inputForm\">";
 		for($i = 0; $i <sizeof($this->whichPlatformOptions);$i++) {
 			echo "<option value=\"";
@@ -62,14 +66,17 @@ class searchableJSON {
 			<input type=\"submit\" name=\"Report\" value=\"Report\">
 			</form>
 			<br>";
+		echo "</body></HTML>";
 	}
 
+	#PURPOSE: Final all the possible platforms to populate the pull down menu
 	public function findAllLabels() {
 		foreach ($this->JSON->platforms as $key => $value) {
 			array_push($this->whichPlatformOptions, $value->label);
 		}
 	}
 
+	#PURPOSE: Find all the possible search fields to populate the pull down menu
 	public function findAllSearchable() {
 		foreach ($this->JSON->platforms as $key => $value) {
 			for($i =0;$i <sizeof($value->searchable);$i++) {
@@ -80,12 +87,14 @@ class searchableJSON {
 		$this->searchFieldOptions = array_values($this->tempSearchFieldOptions);
 	}
 
+	#PURPOSE: Get the inital JSON file and decode it into a iterable object
 	public function getJSON() {
 		$data = file_get_contents('http://www.cs.uky.edu/~paul/public/Games.json');
 		$decodedData = json_decode($data);
 		$this->JSON = $decodedData;
 	}
 
+	#PURPOSE: Find the platform specified by the user
 	public function findLabel() {
 		foreach ($this->JSON->platforms as $key => $value) {
 			if($value->label  == $this->userPlatform) {
@@ -95,6 +104,7 @@ class searchableJSON {
 		$this->findPlatform();
 	}
 
+	#PURPOSE: Assign the url, descriptiors, searchable, etc variables given from the original JSON file
 	public function findPlatform() {
 		foreach($this->JSON->platforms[$this->indexToPrint] as $key => $value) {
 			if($key == "searchable") {
@@ -113,16 +123,16 @@ class searchableJSON {
 				$this->JSONObjects = $value;
 			}
 			else {
-				echo "INVALID JSON FORMAT: Must have url,label,descriptors,objects,and searchable properties";
+				echo "INVALID JSON FORMAT: Must have url,label,descriptors,objects,and searchable properties <br>";
 			}
 		}
 		
 		
 	}
-
+	
+	#PURPOSE: Print appropriate comments and titles matching the criteria
 	public function findTitles() {
 		$this->descriptionJSON = json_decode(file_get_contents($this->titlesURL));
-		#var_dump($this->descriptionJSON);
 		foreach($this->descriptionJSON as $key => $value) {
 			if($key == $this->JSONDescriptors) {
 				for($i = 0; $i < sizeof($value); $i++) {

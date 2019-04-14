@@ -1,0 +1,6 @@
+Matthew Rife
+Sources: W3 Schools, Shodor PHP for passing parameters & Get, StackOverflow for array_unique and array_values
+URL:
+http://www.cs.uky.edu/~mari242/Project4/CatalogueSearch/prog4a.php
+Description:
+This program generates 3 html fields to filter through a dynamic JSON object of video game titles. The user can use any combination of the three to generate output in the form of A)Comments about the platform chosen and B)Any titles that match their criteria.
