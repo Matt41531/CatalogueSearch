@@ -18,26 +18,22 @@ class searchableJSON {
 	public $objectsIndexToPrint = array();
 	
 	public function checkParameters() {
-		global $argv;
-		if(sizeof($argv) == 3) {
-			$this->userInput = "";
+		if(!$this->userPlatform) {
+			echo "<b> Invalid platform </b><br>";
 		}
-		else if (sizeof($argv) == 4) {	
-			$this->userInput = $argv[3];
+		else if(!$this->userSearchable) {
+			echo "<b> Invalid search field </b><br>";
 		}
 		else {
-			echo "Invalid arguments";
-			return;
+			//Worked
 		}
-		$this->userPlatform = $argv[1];
-		$this->userSearchable = $argv[2];	
 	}
 
 	public function getParameters() {
 		$this->userPlatform = $_GET["whichPlatform"];
 		$this->userSearchable = $_GET["searchField"];
 		$this->userInput = $_GET["criteria"];
-		$this->submit = $_GET["submit"];
+		$this->submit = $_GET["Report"];
 	}
 
 	public function echoForm() {
@@ -63,7 +59,7 @@ class searchableJSON {
 			echo "</select>";	
 		echo "<form action=\"#\" id=\"inputForm\">
 			Criteria: <input type=\"text\" name=\"criteria\">
-			<input type=\"submit\" name=\"submit\">
+			<input type=\"submit\" name=\"Report\" value=\"Report\">
 			</form>
 			<br>";
 	}
@@ -141,6 +137,9 @@ class searchableJSON {
 							if($this->userInput == $newValue) {
 								array_push($this->objectsIndexToPrint, $i);
 							}
+							else if($this->userInput == "") {
+								array_push($this->objectsIndexToPrint, $i);
+							}
 						}	
 					}
 				}
@@ -167,7 +166,7 @@ function main() {
 	$JSONObject->echoForm();
 	$JSONObject->getParameters();
 	if($JSONObject->submit) {
-		//$JSONObject->checkParameters();
+		$JSONObject->checkParameters();
 		$JSONObject->findLabel();
 		$JSONObject->findTitles();
 	}
