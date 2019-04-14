@@ -37,12 +37,13 @@ class searchableJSON {
 		$this->userPlatform = $_GET["whichPlatform"];
 		$this->userSearchable = $_GET["searchField"];
 		$this->userInput = $_GET["criteria"];
+		$this->submit = $_GET["submit"];
 	}
 
 	public function echoForm() {
-		echo "<form action=\"\" id=\"inputForm\">
+		echo "<form action=\"#\" id=\"inputForm\">
 			Criteria: <input type=\"text\" name=\"criteria\">
-			<input type=\"submit\">
+			<input type=\"submit\" name=\"submit\">
 			</form>
 			<br>
 			<select name=\"whichPlatform\" form=\"inputForm\">";
@@ -160,9 +161,13 @@ function main() {
 	$JSONObject->findAllLabels();
 	$JSONObject->findAllSearchable();
 	$JSONObject->echoForm();
-	$JSONObject->checkParameters();
-	$JSONObject->findLabel();
-	$JSONObject->findTitles();
+	$JSONObject->getParameters();
+	if($JSONObject->submit) {
+		//$JSONObject->checkParameters();
+		$JSONObject->findLabel();
+		$JSONObject->findTitles();
+		echo "submitted";
+	}
 }
 
 main();
