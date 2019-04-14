@@ -41,12 +41,7 @@ class searchableJSON {
 	}
 
 	public function echoForm() {
-		echo "<form action=\"#\" id=\"inputForm\">
-			Criteria: <input type=\"text\" name=\"criteria\">
-			<input type=\"submit\" name=\"submit\">
-			</form>
-			<br>
-			<select name=\"whichPlatform\" form=\"inputForm\">";
+		echo "<select name=\"whichPlatform\" form=\"inputForm\">";
 		for($i = 0; $i <sizeof($this->whichPlatformOptions);$i++) {
 			echo "<option value=\"";
 			echo $this->whichPlatformOptions[$i];
@@ -66,7 +61,13 @@ class searchableJSON {
 	
 		}	
 			echo "</select>";	
+		echo "<form action=\"#\" id=\"inputForm\">
+			Criteria: <input type=\"text\" name=\"criteria\">
+			<input type=\"submit\" name=\"submit\">
+			</form>
+			<br>";
 	}
+
 	public function findAllLabels() {
 		foreach ($this->JSON->platforms as $key => $value) {
 			array_push($this->whichPlatformOptions, $value->label);
@@ -129,26 +130,24 @@ class searchableJSON {
 		foreach($this->descriptionJSON as $key => $value) {
 			if($key == $this->JSONDescriptors) {
 				for($i = 0; $i < sizeof($value); $i++) {
-					echo $value[$i], PHP_EOL;
+					echo $value[$i], "<br>";
 				}
 			}
 			else if($key == $this->JSONObjects) {
 				$this->TitlesObject = $value;		
-				#var_dump($this->TitlesObject);
 				for($i = 0; $i <sizeof($this->TitlesObject); $i++) {
 					foreach($this->TitlesObject[$i] as $newKey => $newValue) {
 						if($this->userSearchable == $newKey) {
 							if($this->userInput == $newValue) {
 								array_push($this->objectsIndexToPrint, $i);
 							}
-						}
-						#echo $newKey, " : ", $newValue, PHP_EOL;
+						}	
 					}
 				}
 
 				for($i = 0; $i<sizeof($this->objectsIndexToPrint); $i++) {
 					foreach($this->TitlesObject[$this->objectsIndexToPrint[$i]] as $newKey => $newValue) {
-						echo $newKey, " : ". $newValue, PHP_EOL;
+						echo $newKey, " : ". $newValue, "<br>";
 					}
 				}
 			}
@@ -166,7 +165,6 @@ function main() {
 		//$JSONObject->checkParameters();
 		$JSONObject->findLabel();
 		$JSONObject->findTitles();
-		echo "submitted";
 	}
 }
 
